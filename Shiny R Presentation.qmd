@@ -1,0 +1,483 @@
+---
+title: "Bring Data to Life: Create Interactive Apps with Shiny in R"
+author: "Jarrod Griffin"
+date: 2024-11-19
+format: 
+  revealjs:
+    theme: solarized
+    code: true
+    code-highlight-theme: dracula
+editor: visual
+execute:
+  echo: false
+---
+
+## Learning Outcomes
+
+After taking this workshop, participants should be able to:
+
+------------------------------------------------------------------------
+
+### 1. Understand Shiny App Structure
+
+-   Learn the **fundamental architecture** of Shiny apps
+-   Structure your code using either:
+    -   `ui.R` / `server.R` files
+    -   single `app.R` file
+
+------------------------------------------------------------------------
+
+### 2. Implement Reactive Programming
+
+-   Use **reactive values** and **expressions** to create:
+    -   Dynamic, interactive applications.
+-   Manage user inputs and data flow efficiently.
+
+------------------------------------------------------------------------
+
+### 3. Build Interactive Data Visualizations
+
+-   Incorporate interactive plots with **`ggplot2`** and **`plotly`**
+-   Customize visualizations for an engaging user experience
+
+------------------------------------------------------------------------
+
+### 4. Deploy Shiny Apps on Various Platforms
+
+-   Deploy apps to make them accessible online:
+    -   **shinyapps.io**
+    -   **Posit Cloud**
+-   Explore deployment options for internal use
+    -   **shinylive**
+
+------------------------------------------------------------------------
+
+### 5. Secure Shiny Applications
+
+-   Protect your apps by:
+    -   Implementing authentication via **validate** or **shinymanager**
+
+------------------------------------------------------------------------
+
+## What is Shiny?
+
+**Enables Real-Time Data Interaction**\
+Build dashboards and apps where users can **explore data dynamically** through sliders, dropdowns, and other user inputs.
+
+**User-Friendly with No Web Development Skills Needed**\
+Shiny is built on the **Bootstrap** HTML/CSS framework, but you don’t need to know **HTML**, **CSS**, or **JavaScript**.
+
+**Established and Reliable**\
+First released by **Posit** in 2012, Shiny is widely used and actively supported across industries.
+
+------------------------------------------------------------------------
+
+## Why Use Shiny?
+
+**Versatility**  
+Widely used in **finance**, **healthcare**, and **academia**, Shiny integrates with powerful R packages like:  
+- **plotly** for interactive plots  
+- **DT** for data tables  
+- **leaflet** for geospatial visualizations  
+
+**Accessibility**  
+Shiny apps are **web-based** and accessible on **any device**, even for non-technical users. No need to install R!
+
+**Interactivity**  
+Transform static R analyses into **dynamic applications** with various inputs the user can control
+
+------------------------------------------------------------------------
+
+## Getting Started: Open RStudio or Posit Cloud
+
+### Option 1: Open RStudio (Desktop)
+
+1. Launch the **RStudio** application installed on your computer.
+2. If RStudio is not installed:
+   - Use Posit Cloud
+
+---
+
+## Getting Started: Open RStudio or Posit Cloud
+
+### Option 2: Use Posit Cloud
+
+1. Visit [posit.cloud](https://posit.cloud) in your web browser.
+2. Log in with your account or create a new one if needed.
+3. Once logged in:
+   - Click on **“New Project”** to create a fresh workspace.
+   - Your workspace will look similar to RStudio Desktop.
+
+---
+
+## Install Required Packages
+
+Before we get started, ensure you have the following packages installed:
+
+- **`shiny`**: For building Shiny apps.  
+- **`tidyverse`**: For data manipulation and visualization.  
+- **`shinydashboard`**: For creating dashboards.  
+- **`plotly`**: For interactive visualizations.  
+- **`DT`**: For interactive data tables.
+
+```r
+install.packages(c("shiny", "tidyverse", "shinydashboard", "plotly", "DT"))
+```
+
+---
+
+## Shiny App Structure
+
+Shiny apps are built using two main components:
+
+1. **UI (User Interface)**  
+   - Defines what the user sees and interacts with.  
+   - Handles layout, inputs (e.g., sliders, text boxes), and outputs (e.g., plots, tables).
+
+2. **Server**  
+   - Contains the logic of the app.  
+   - Processes inputs and generates outputs dynamically.
+
+---
+
+### Two Ways to Organize Shiny Apps
+
+1. **Using `ui.R` and `server.R`**  
+   - Two separate files:
+     - `ui.R`: Code for the user interface.
+     - `server.R`: Code for server logic.
+
+2. **Using `app.R`**  
+   - Combine both UI and Server components in a single file.
+
+## Page Layout Functions
+
+These functions define the overall structure of the app:
+
+- **`fluidPage()`**: A flexible, responsive layout.
+
+
+- **`fixedPage()`**: A fixed-width layout.
+
+
+- **`navbarPage()`**: A layout with navigation tabs.
+
+
+- **`fillPage()`**: A layout that fills the browser window.
+
+
+---
+
+## Layout Organization Functions
+
+These functions help arrange UI elements within the page:
+
+- **`sidebarLayout()`**: Creates a sidebar and main panel layout.
+
+
+- **`verticalLayout()`**: Stacks elements vertically.
+
+
+- **`splitLayout()`**: Places elements side by side with fixed proportions.
+
+
+- **`flowLayout()`**: Places elements in a row, wrapping as needed.
+
+
+---
+
+## Input Functions
+
+These functions allow users to interact with the app:
+
+- **`numericInput()`**: Input for numbers.
+
+
+- **`sliderInput()`**: A slider to select a range or value.
+
+
+- **`textInput()`**: Text input box.
+
+
+- **`selectInput()`**: Dropdown menu for selections.
+
+
+- **`dateInput()`**: Input for selecting a date.
+
+
+---
+
+## Output Functions
+
+These functions display the app's results:
+
+- **`plotOutput()`**: Place for server-generated plots.
+
+
+- **`tableOutput()`**: Displays a basic table.
+
+
+- **`textOutput()`**: Displays text.
+
+
+- **`dataTableOutput()`**: Interactive data table.
+
+
+- **`uiOutput()`**: Dynamically generates UI elements.
+
+
+---
+
+## Dynamic and Conditional Functions
+
+These functions create reactive or conditional UI elements:
+
+- **`uiOutput()`**: Dynamically generates UI components.
+
+
+- **`conditionalPanel()`**: Displays content conditionally.
+
+
+---
+
+## Thematic and Custom Styling Functions
+
+These functions add styles and themes to your app:
+
+- **`tags$` Functions**: Add custom HTML elements.
+
+
+- **`div()` and `span()`**: Add custom containers and inline elements.
+
+
+- **`shinythemes::themeSelector()`**: Add predefined themes.
+
+
+- **`bslib::bs_theme()`**: Customize Bootstrap themes.
+
+
+---
+
+## Specialized Layouts
+
+Use these functions for specific designs:
+
+- **`shinydashboard::dashboardPage()`**: Create dashboards.
+
+
+- **`navbarPage()`**: Multi-tab layout.
+
+
+- **`tabsetPanel()` and `tabPanel()`**: Tabbed content areas.
+
+---
+
+## What is Reactivity?
+
+**Reactivity** is how Shiny apps dynamically respond to user inputs and update outputs in real time.
+
+---
+
+### Key Components of Reactivity
+
+1. **Inputs**  
+   - User-provided values like sliders, text boxes, and dropdowns.
+
+2. **Reactive Expressions**  
+   - Define intermediate computations that depend on inputs.  
+   - Automatically re-run when their dependencies change.
+
+3. **Outputs**  
+   - Results displayed to the user, such as plots, tables, or text.
+
+---
+
+### How Reactivity Works
+
+1. **User Changes an Input**
+   - Triggers any reactive expressions or outputs that depend on it.
+
+2. **Reactivity Chain**  
+   - Shiny recalculates only the parts of the app affected by the change.
+
+3. **Updates the Output**  
+   - Automatically displays the updated result to the user.
+
+
+
+---
+
+## Reactive Expressions
+
+- Use `reactive()` to create intermediate computations.
+- Improves efficiency by reusing calculations.
+
+### Why Reactivity Matters
+
+1. **Dynamic User Interaction**  
+   - Respond to inputs instantly, making apps feel responsive.
+
+2. **Efficiency**  
+   - Recalculate only the necessary components.
+
+3. **Simplified Code**  
+   - Focus on logic rather than manually updating outputs.
+
+---
+
+## Example: Basic Reactivity
+
+```r
+ui <- fluidPage(
+  sliderInput("num", "Choose a number:", 1, 100, 50),
+  numericInput("multiplyBy","Input a multiple:",2),
+  textOutput("result")
+)
+
+server <- function(input, output) {
+  # Create a reactive expression
+  doubled <- reactive({
+    input$num * input$multiplyBy
+  })
+  
+  # Use the reactive expression in an output
+  output$result <- renderText({
+    paste("Double your number is:", doubled())
+  })
+}
+
+options(shiny.reactlog = TRUE)
+shinyApp(ui = ui, server = server)
+```
+
+---
+
+
+## Dependency Graph
+
+- Shiny automatically tracks dependencies between inputs, outputs, and reactive expressions.
+- Updates happen efficiently without recalculating unrelated parts.
+
+---
+
+
+
+## Debugging Reactivity: `reactlog`
+
+- Use `reactlog` to visualize the reactivity graph.
+- Enable it with:
+  ```r
+  options(shiny.reactlog = TRUE)
+  ```
+- Open the graph with:
+  - **Ctrl + F3** (Windows/Linux)
+  - **Cmd + F3** (Mac)
+  
+  
+---
+
+### Cloud Based Deployment Options
+
+1. **shinyapps.io**  
+   - A hosted platform by Posit for deploying Shiny apps.  
+   - **Steps to deploy**:
+     ```r
+     # Install the rsconnect package
+     install.packages("rsconnect")
+
+     # Authenticate with shinyapps.io
+     rsconnect::setAccountInfo(name='YOUR_NAME', token='YOUR_TOKEN', secret='YOUR_SECRET')
+
+     # Deploy your app
+     rsconnect::deployApp('path/to/your/app')
+     ```
+     
+---
+
+### Cloud Based Deployment Options
+
+2. **Posit Cloud**  
+   - Develop and share Shiny apps directly in the cloud.
+   - **How to use**:
+     - Create a project in [Posit Cloud](https://posit.cloud).
+     - Add your Shiny app files (`app.R`, or `ui.R` and `server.R`).
+     - Run the app to share it with collaborators.
+
+---
+
+### shinylive: No Server Required
+
+- Use **shinylive** to run Shiny apps in a web browser without a server.
+- **How it works**:
+  - Converts Shiny apps to WebAssembly.
+  - Ideal for demos or lightweight applications.
+- **Export an app using `shinylive`**:
+  ```r
+  install.packages("shinylive")
+  shinylive::export_app("path/to/your/app", "output/directory")
+  ```
+
+---
+
+## Popular Security Methods for Shiny Apps
+
+| **Method**                | **Best For**                                                                 |
+|---------------------------|-------------------------------------------------------------------------------|
+| **Shiny Server/Connect**  | Enterprise apps needing scalability and integration with existing systems.    |
+| **`shinymanager`**        | Publicly hosted apps needing quick and easy authentication.                   |
+
+---
+
+### 1. Authentication with Shiny Server/Posit Connect
+
+**Why Use It?**  
+- Enterprise-grade solution with built-in authentication and authorization.
+- Supports **LDAP**, **Active Directory**, and **OAuth** integration.
+- Provides role-based access control and secure hosting.
+
+**Key Features:**
+- Scalable for apps with multiple users.
+- Manages user credentials securely outside the app.
+
+**Best For:**
+- Organizations with existing infrastructure.
+- Apps requiring advanced security and compliance.
+
+---
+
+### 2. Authentication with `shinymanager`
+
+**Why Use It?**  
+- Quick and easy authentication for Shiny apps.
+- Built-in login page and role management without external infrastructure.
+
+**Key Features:**
+- Password protection and session tracking.
+- Role-based access control (e.g., admin vs user).
+
+**Example Code:**
+```r
+library(shinymanager)
+
+# Define credentials
+credentials <- data.frame(
+  user = c("admin", "user1"),
+  password = c("adminpass", "userpass"),
+  admin = c(TRUE, FALSE),
+  stringsAsFactors = FALSE
+)
+
+# Secure UI
+ui <- secure_app(
+  fluidPage(
+    h1("Welcome to the Secure App!")
+  )
+)
+
+# Secure Server
+server <- function(input, output, session) {
+  secure_server(check_credentials = check_credentials(credentials))
+}
+
+shinyApp(ui, server)
+```
