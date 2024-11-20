@@ -1,10 +1,20 @@
+packages <- c("shiny", 
+              "tidyverse", 
+              "shinydashboard", 
+              "plotly", 
+              "DT")
+missing_packages <- packages[!packages %in% installed.packages()[, "Package"]]
+if (length(missing_packages) > 0) {
+  install.packages(missing_packages)
+}
+
 library(shiny)
 library(tidyverse)
 library(shinydashboard)
 library(plotly)
 library(DT)
 
-post_data.df<-read_csv("data/Post Data.csv")%>%
+post_data.df<-read_csv("https://raw.githubusercontent.com/jsgriffin96/shiny_r_workshop/refs/heads/main/data/Post%20Data.csv")%>%
   mutate(across(c("Date", "Revenue"), ~ str_extract(.x, "\\d+")))%>%
   mutate(across(c("Date", "Revenue"), as.numeric))%>%
   mutate(Post_Type=factor(Post_Type, levels=c("Featured Product","Announcement","Event Showcase","Employee of the Week")))%>%
@@ -121,7 +131,6 @@ server <- function(input, output, session) {
   })
   
   output$conversionsTimeSeries <- renderPlotly({
-    print(conversions_by_day())
     plot_ly(data = conversions_by_day(), x = ~Date, y = ~total_conversions, color = ~Post_Type, type = 'scatter', mode = 'lines')
   })
   

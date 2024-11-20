@@ -1,0 +1,12 @@
+name: shiny_r_workshop
+title: shiny_r_workshop
+username: ccidmworkshop
+account: ccidmworkshop
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 13375239
+bundleId: 9388090
+url: https://ccidmworkshop.shinyapps.io/shiny_r_workshop/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
